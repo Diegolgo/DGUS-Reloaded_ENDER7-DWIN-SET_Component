@@ -1,176 +1,43 @@
 
-# DGUS-reloaded (for Klipper) DWIN_SET, CR6Community Edition
+Working on Klipper v0.13.0-642-g77d5d942  (May 07 2026)
 
-## PLEASE NOTE:
-The goal of this project is to breathe new life into the CR6 stock TFT display, which would otherwise no longer function once Klipper is installed on your printer.
-Installing just this firmware onto your display is NOT enough.  The activation and integration of this UI into your printer system relies totally upon you to also:  
-    1. Install Mainsail on a host processor (e.g. Raspberry pi or Linux PC)  
-    2. Flash the pre-compiled Klipper.bin file to your printer's motherboard.   
-    3. Install the t5uid1 python application into the ~klipper/klippy/extras folder on your Klipper host processor  
-    4. Install the Stable_Z_Home "plug-in" from  [https://github.com/matthewlloyd/Klipper-Stable-Z-Home](https://github.com/matthewlloyd/Klipper-Stable-Z-Home)  
-    5. Install and tailor the Mainsail .cfg files provided in the Related Changes folder of the linked repository  
-    6. Tailor your slicer (instructions are only provided for Cura and OrcaSlicer) to include M73 messages in the gcode files  
+This is very simple if you have previous version of lcd working on klipper, so go to step 1. if you dont, stay here in step 0 (cr6 and ender7 are the same screen, just rotated)
+Step 0: research:
+so, is too much to explain everything, but the simple steps:
+flash the lcd with desuu info here: 
+https://github.com/Desuuuu/DGUS-reloaded
+and here
+https://github.com/capekoviroboti/creality-dwin-lcd-customizer
+you can edit, rotate, and do a lot , but i only need to "see" the progress, temp, or maybe sometime use touchscreen (with mainsail is all on web browser)
+a very good example is here:
+https://github.com/fryc88/klipper-sv06plus-screen
 
-I have configured my own CR6-SE printer with KlipperScreen on a 7" tablet at the printer and Mainsail on a laptop beside the printer, but there are still some operations for which I prefer to use my stock display with this firmware.  
+Step 1 (skip if you want to use the firmware precompiled):
+use the folder make_menuconfig_Extensions, to put files inside klipper and make the "new" version of firmware to Ender 7.
+credits to DGUS-Reloaded_for_CR6-Klipper_Component-2.0.0 link https://github.com/Thinkersbluff/DGUS-Reloaded_for_CR6-Klipper_Component
+enter to kiauh (or make yourself in linux)
+compile the firmware version normaly (you gonna now have the DGU option in make menu)
+that's it.
+put the firmware.bin in a sd card, plugin in the Ender 7 printer. turn off , and turn on. just a couple of second...
 
-I am maintaining these two repositories in the hope that some of you will also enjoy some features of both this DWIN_SET application and my customizations of Klipper.  
-I recommend that you start with installing and configuring MainsailOS and Klipper on your printer, and then return to flash your stock display if you - like I - enjoy some of these features.  
+Step 2
+in klipper via Filezila or something like that, you need to put the folder: t5uid1 inside klippy/extras/ THIS HAVE TO BE THIS EXACT FOLDER, newer version broke the comunication with the printer, some of the .py files have errors and so on... (this is a previous version of DGU)
 
-To help tease you into trying this firmware, here is a sampling of some of the screens I use most often:  
+Step 3 
+restart printer and MCU
+that's all.
+done
 
-<img src="https://github.com/user-attachments/assets/144ecea5-29f6-4cd5-9fdc-55c23dc6611a" alt="Home Screen" width="180" height="320">
-<img src="https://github.com/user-attachments/assets/6b18f104-7bdf-492c-8975-a885a7761071" alt="ZOffset Screen" width="180" height="320">
-<img src="https://github.com/user-attachments/assets/c6550ada-fdc4-4077-8f4c-10b3181b8d9c" alt="ABL Screen" width="180" height="320">
-<img src="https://github.com/user-attachments/assets/1a2df1ad-7fd8-4d04-8f1c-f8648cd6a2e3" alt="PID Tuning Screen" width="180" height="320">
-<img src="https://github.com/user-attachments/assets/3270ed36-0c93-4227-9662-c32ef38e7aac" alt="Rotation Distance Screen" width="180" height="320">
+now you have latest version of klipper, and lcd with touchscreen with commands working (movements, heating, PID, config, progress, etc etc)
 
-<img src="https://github.com/user-attachments/assets/1d66360d-592c-44f6-9bf9-efef93a1ee99" alt="Change Filament Screen" width="180" height="320">
-<img src="https://github.com/user-attachments/assets/db0d69ef-4aed-4c9e-a14e-5bc9a6552759" alt="Print Menu Screen" width="180" height="320">
-<img src="https://github.com/user-attachments/assets/230409ca-0283-4bb7-9a21-47ee9d57f15e" alt="Print Macros Screen" width="180" height="320">
-<img src="https://github.com/user-attachments/assets/1914bae2-530c-4f68-b5c1-ce0846d0ffaf" alt="Print Status Screen" width="180" height="320">
+note: if you gonna use my printer.cfg and other, notice that  need to call some of others .cfg from there , like cr6.cfg etc.
+very important to put DGU_START_PRINT inside START_PRINT wherever you have that...
 
-This DWIN touchscreen firmware is designed and compiled to run on the portrait-mode T5L 272x480 pixel DWIN displays provided stock with Creality CR6-SE and CR6-MAX FDM printers.
 
-Initially refactored and extended from the T5UID1 DGUS-reloaded firmware by Desuuuu which is available from [this repository](https://github.com/Desuuuu/DGUS-reloaded-Klipper).  
 
-At release 0.3, completely refactored again, to closely resemble the [CF6.1 Community Firmware](https://github.com/CR6Community/CR-6-touchscreen) in look, feel, terminology, and workflow logic.
 
-## Disclaimer
-**This software is provided without any warranty. You are solely responsible for your use of it.**
 
-## Features
-This firmware was inspired by the CR6Community Firmware touchscreen firmware, but it is NOT as feature-rich as the CR6Community Firmware. 
 
-Features present in this version of the UI include:
-* Support for _most_ workflows best performed standing at the printer 
-* Emergency Stop (M112) button on every screen
-* Ability to Tune some printer settings during a print
-* PID autotuning for both Nozzle and for Bed, with SAVE_CONFIG option
-* Pre-defined Material heat settings for PLA, PETG and ABS
-* Screen Display Brightness adjustment
-* Pause/Resume/Cancel print controls 
-* Support for M73 message display during printing
-* SET_GCODE_OFFSET Z for current print session
-* Support for manual leveling, for those who have retrofit bed wheels
-* Run ABL with option to SAVE_CONFIG (default) Profile
-* Display name of file currently being printed
-* Display elapsed time since starting current print
-
-NEW at v0.3.8:
-* Reprint last job
-* Enable|Disable Runout Sensor
-* Printer halts and prompts for filament, if Runout Sensor is Enabled AND Filament is not detected
-
-NEW at v0.3.9:
-* New Z Offset calibration screen
-* LOAD|REMOVE default Bed Mesh profile feature added to the ABL screen. Also supports viewing other profiles, if loaded via CONSOLE
-* Enhanced Manual Leveling screen - also supports ABL users with ability to test/measure gaps at each corner + in center of bed
-* Able to see status of - and Enable|Disable - the Runout sensor while printing or paused.  
-
-NEW at v0.4.1:
-* Added displays of Print Time Remaining and Print Time Elapsed
-* Moved Gcode Offset to the Tune screens only added LED On/Off to the Print Status and Print Paused screens
-* Added more controls to the Print Finished screen, to support post-print workflows
-    
-NEW at v0.4.2:
-* Replaces Repeat Last Print functionality with a full scroll/select/print capability for all .gcode files on the Virtual SD Card.
-* Removed from beta and released as STABLE.
-
-NEW at v0.4.3
-* Adds a Delete File function to the Print_Menu page. 
-  * Includes an "Are you sure?" popup to Confirm/Cancel each request
-  * Shrinks the Refresh button to make space for the new button on the page
-
-NEW at v0.4.4
-* Modifies the Information page to display the current version of the DGUS-Reloaded Klipper component
-* Adds an information icon to the Home page, to help users discover and access the Information page
-* Corrects a compilation error which may have prevented switching to the Please wait... page, when Homing in version 0.4.3.
-
-NEW at v0.4.5
-* Adds Firmware Retraction controls to the Prepare and Printing Tune pages
-* Adds Material Presets editing capability to the SetUp page
-* Modifies the Automatic Bed Leveling page layout and brightens the mesh values display
-
-NEW at v0.4.6
-* Overhauls the Automatic Bed Leveling function, to support all of the user's bed_mesh profiles, not just "default"
-* Adds colour-coding of the displayed bed_mesh points, with a user-specifiable threshold for what min/max values are low enough to code as "green".
-      (Defaults to +/- 0.100mm, per the Mainsail HeightMap default settings. Which is also 10 times the probing consistency threshold configured for Safe-Z-Home.)
-
-NEW at v0.4.7
-*  Adds option for configuring the printer to automatically unload the filament at the end of the current print
-
-NEW at v0.4.8
-* Adds a Calibrate Extruder Rotation_Distance function (2 new screens)
-
-NEW at v0.4.9
-* Adds a Custom Macros capability, with a user-definable set of menus accessed through a new button on the top bar of selected menus.
-
-NEW at v0.5.0
-* Converts the Print Menu screen to look and operate in the same way as the Macros screen
-* Re-factors the Macro screen function to cache the lists from DGUS_Macro_Menus.cfg into a dictionary, for speed
-
-NEW at v0.5.1
-* Reverts the touchscreen to "beep on touch" behaviour and removes the debouncing delays from controls
-* Makes the UI much more responsive, but some controls may be overly sensitive and trigger multiple times on a single activation.
-
-NEW at v0.5.2
-* Fixes issues #70 and #71
-
-NEW at v1.0.0
-* Fixes issues 79, 80, 84, 87
-* Changes include memory addresses, breaking backward-compatibility and warranting a MAJOR version bump
-
-****************************************************************************************************
->> **CAUTION:** The automatic bed-leveling function provided with this firmware ONLY works correctly if you also configure your printer.cfg to perform a 5x5 bed mesh.  If you do not want to use a 5x5 mesh, do not use this ABL function.
-****************************************************************************************************
-
-## Compatibility
-This firmware **should** be compatible with any configuration of CR6-SE or CR6-MAX printer, regardless of whether that machine is fully stock or substantially modified. (It even includes a manual leveling screen, for those of you who have installed manual bed-leveling wheels.)
-
-Testing is done on the following machine:
-
-* Creality CR6-SE, modified with:
-    - a BTT SKR CR6 v1.0 motherboard
-    - a direct drive Orbiter v1.5 extruder with Moons pancake motor
-    - a Dragon HF hotend
-    - 0.9 deg Y-Axis motor
-    - a PEI flexible magnetic sheet print bed
-    - bed converted to use linear rails
-    - BTT SFS 1.0 filament motion sensor
-
-## Prerequisites
-For this DWIN_SET to work with your printer, you must also:
-- Install the latest version of MainsailOS
-- Tailor your Klipper installation, MainsailOS configuration and Cura
-- Flash the applicable pre-compiled Klipper.bin file provided for you in the other repo. 
-
-[All of the instructions for achieving the above are provided with the matching Klipper component release, here.](https://github.com/Thinkersbluff/dgus-reloaded_klipper)
-
-## How to Customize the UI Look and Feel
-You can make modifications to the DWIN_SET firmware by opening the `DWprj.hmi` file in **DGUS Tools**.  The tool, developer's documents and Tutorial URLs have been added to the repository at this release, to help anyone who would like to learn how this is done.
-
-You can edit the graphics using a simple bitmap editing tool, like Windows PAINT.
-
-After finishing your modifications, you will need to press the *Generate* command from the DGUSTool File menu to update the 3 required binary files (13TouchFile.bin, 14ShowFile.bin and 22_Config.bin) in the DWIN_SET folder.
-If you modified any of the screen layouts, icons or buttons, you will also need to use the ICL tool to regenerate the applicable ICL file(s) (intuitively named: 24_icons.icl, 27_buttons.icl, 32_screens.icl, 30_progress_left.icl and 37_progress_right.icl).
-
-You can then flash your touchscreen using the resulting `DWIN_SET` folder.
-
-## Functional Changes Also Require Edits To Modified Klipper Files
-Please note, that to actually add/delete/modify functionality, you will also need to make the necessary changes to the applicable modified Klipper files.
-
-If you add any data variable display widgets to any of the screens, you also need to edit the DGUS-reloaded Klipper file pages.cfg in ~/klipper/klippy/extras/t5uid1/dgus-reloaded, so that the data will be refreshed and maintained when that screen is being displayed.
-
-If you wish to modify the nozzle and bed temperature presets for PLA, ABS and/or PETG, you will need to modify the file _init_.py in the folder ~/klipper/klippy/extras/t5uid1/dgus-reloaded, so that the program will initialize those variables with the values of your choosing.
-
-## Additional background info is available in the Desuuuu/DGUS-reloaded-Klipper-config Wiki
-* [Flashing the firmware](https://github.com/Desuuuu/DGUS-reloaded-Klipper/wiki/Flashing-the-firmware)
-* [Print status](https://github.com/Desuuuu/DGUS-reloaded-Klipper/wiki/Print-status)
-* [Print progress display](https://github.com/Desuuuu/DGUS-reloaded-Klipper/wiki/Print-progress-display)
-
-## How to Contribute
-
-CR6Community Firmware features NOT present in this release may be developed in future releases, but no schedule commitment is possible for such extensions.  Users who are able to define and develop such modifications are welcome to fork this repository and to submit Pull Requests or to open Discussions or Issues as appropriate, to propose those changes.
 
 ## Credits
 | Material                                                                       | Author                                                    | Modified | License                                                               |
